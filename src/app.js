@@ -9,18 +9,19 @@ require("dotenv").config();
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(compression());
-//init db 
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+//init db
 require("./dbs/init.mongoodb");
 const { checkOverload } = require("./helpers/check.connect");
 //checkOverload();
+
 //init routes
-app.get("/", (req, res, next) => {
-  const strCompression = "hello compress";
-  return res.status(200).json({
-    message: "welcome!",
-    metaldata: strCompression.repeat(10000),
-  });
-});
+app.use("", require("./routes"));
 
 //handle error
 
